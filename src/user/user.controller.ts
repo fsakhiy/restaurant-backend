@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Get,
   Post,
   Delete,
   BadRequestException,
@@ -10,16 +9,11 @@ import { UserService } from './user.service';
 import {
   GeneralSuccess,
   SuccessCreatingUser,
-} from './dto/response/success.dto';
+} from 'src/dto/response/success.dto';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
-  @Get()
-  getHello(): string {
-    return this.userService.my();
-  }
 
   @Post('register')
   async createUser(

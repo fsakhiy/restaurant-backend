@@ -2,26 +2,20 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { UserController } from './user.controller';
-import { UserService } from './user.service';
-import { PrismaService } from './prisma.service';
 import { PasswordService } from './password.service';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
+import { AuthModule } from './auth/auth.module';
+import { PrismaService } from './prisma.service';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: '.env',
     }),
+    AuthModule,
+    UserModule,
   ],
-  controllers: [AppController, UserController, AuthController],
-  providers: [
-    AppService,
-    UserService,
-    PrismaService,
-    PasswordService,
-    AuthService,
-  ],
+  controllers: [AppController],
+  providers: [AppService, PasswordService, PrismaService],
 })
 export class AppModule {}

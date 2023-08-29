@@ -5,15 +5,15 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { PrismaService } from './prisma.service';
+import { PrismaService } from '../prisma.service';
 import { Prisma } from '@prisma/client';
-import { GeneralError } from './dto/response/error.dto';
-import { deleteUser } from './dto/model/user/user.dto';
-import { PasswordService } from './password.service';
+import { GeneralError } from '../dto/response/error.dto';
+import { deleteUser } from './dto/user.dto';
+import { PasswordService } from '../password.service';
 import {
   GeneralSuccess,
   SuccessCreatingUser,
-} from './dto/response/success.dto';
+} from '../dto/response/success.dto';
 
 @Injectable()
 export class UserService {
@@ -21,10 +21,6 @@ export class UserService {
     private prisma: PrismaService,
     private readonly passwordService: PasswordService,
   ) {}
-
-  my(): string {
-    return 'this is your user';
-  }
 
   async signUp(
     signupData: Prisma.UserCreateInput,
