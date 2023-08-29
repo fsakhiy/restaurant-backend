@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { PrismaService } from './prisma.service';
+import { PasswordService } from './password.service';
 
 @Module({
   imports: [
@@ -13,6 +14,6 @@ import { PrismaService } from './prisma.service';
     }),
   ],
   controllers: [AppController, UserController],
-  providers: [AppService, UserService, PrismaService],
+  providers: [AppService, UserService, PrismaService, PasswordService],
 })
 export class AppModule {}

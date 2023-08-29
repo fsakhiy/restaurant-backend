@@ -1,6 +1,16 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Delete,
+  BadRequestException,
+} from '@nestjs/common';
 import { UserService } from './user.service';
-import { User as UserModel } from '@prisma/client';
+import {
+  GeneralSuccess,
+  SuccessCreatingUser,
+} from './dto/response/success.dto';
 
 @Controller('user')
 export class UserController {
@@ -20,7 +30,24 @@ export class UserController {
       password: string;
       email: string;
     },
-  ): Promise<UserModel> {
+  ): Promise<SuccessCreatingUser> {
     return await this.userService.signUp(postData);
+  }
+
+  @Delete('delete')
+  async deleteUser(
+    @Body()
+    deleteData: {
+      username: string;
+      password: string;
+    },
+  ): Promise<GeneralSuccess> {
+    if (
+      deleteData.password === undefined ||
+      deleteData.username === undefined
+    ) {
+      throw new BadRequestException('username and password required');
+    }
+    return await this.userService.deleteUser(deleteData);
   }
 }
