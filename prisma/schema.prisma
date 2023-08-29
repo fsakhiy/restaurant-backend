@@ -11,36 +11,66 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  uuid      String   @unique @default(uuid())
+  id        Int        @id @default(autoincrement())
+  uuid      String     @unique @default(uuid())
   name      String
-  username  String   @unique
-  email     String   @unique
+  username  String     @unique
+  email     String     @unique
   password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
   Food      Food[]
+  Invoice   Invoice[]
+  Beverage  Beverage[]
 }
 
 model Food {
-  id          Int      @id @default(autoincrement())
-  uuid        String   @unique @default(uuid())
+  id          Int       @id @default(autoincrement())
+  uuid        String    @unique @default(uuid())
   name        String
   price       Decimal
   description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   createdById Int
-  createdBy   User     @relation(fields: [createdById], references: [id])
+  createdBy   User      @relation(fields: [createdById], references: [id])
+  invoices    Invoice[]
+}
+
+model Beverage {
+  id          Int       @id @default(autoincrement())
+  uuid        String    @unique @default(uuid())
+  name        String
+  price       Decimal
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  createdById Int
+  createdBy   User      @relation(fields: [createdById], references: [id])
+  invoices    Invoice[]
 }
 
 model Customer {
-  id        Int      @id @default(autoincrement())
-  uuid      String   @unique @default(uuid())
+  id        Int       @id @default(autoincrement())
+  uuid      String    @unique @default(uuid())
   name      String
-  email     String?  @unique
-  mobile    String?  @unique
+  email     String?   @unique
+  mobile    String?   @unique
   address   String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Invoice   Invoice[]
+}
+
+model Invoice {
+  id          Int        @id @default(autoincrement())
+  uuid        String     @unique @default(uuid())
+  createdById Int
+  createdBy   User       @relation(fields: [createdById], references: [id])
+  customerId  Int
+  customer    Customer   @relation(fields: [customerId], references: [id])
+  foods       Food[]
+  beverages   Beverage[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
