@@ -4,10 +4,10 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { GeneralSuccess } from 'src/dto/response/success.dto';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { LoginRequest } from 'src/auth/dto/request.dto';
 import { GeneralError } from 'src/dto/response/error.dto';
-import { PasswordService } from 'src/password.service';
+import { PasswordService } from 'src/password/password.service';
 
 @Injectable()
 export class AuthService {

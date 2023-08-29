@@ -5,11 +5,11 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { PrismaService } from '../prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 import { GeneralError } from '../dto/response/error.dto';
 import { deleteUser } from './dto/user.dto';
-import { PasswordService } from '../password.service';
+import { PasswordService } from '../password/password.service';
 import {
   GeneralSuccess,
   SuccessCreatingUser,
