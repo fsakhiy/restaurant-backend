@@ -8,7 +8,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 import { GeneralError } from '../dto/response/error.dto';
-import { deleteUser } from './dto/user.dto';
+import { DeleteUser } from './dto/user.dto';
 import { PasswordService } from '../password/password.service';
 import {
   GeneralSuccess,
@@ -68,7 +68,7 @@ export class UserService {
     return userData;
   }
 
-  async deleteUser(userData: deleteUser): Promise<GeneralSuccess> {
+  async deleteUser(userData: DeleteUser): Promise<GeneralSuccess> {
     const hashedPassword = await this.prisma.user.findFirst({
       where: {
         username: userData.username,
