@@ -10,6 +10,7 @@ import {
   GeneralSuccess,
   SuccessCreatingUser,
 } from 'src/dto/response/success.dto';
+import { DeleteUser, RegisterUser } from './dto/user.dto';
 
 @Controller('user')
 export class UserController {
@@ -18,12 +19,7 @@ export class UserController {
   @Post('register')
   async createUser(
     @Body()
-    postData: {
-      name: string;
-      username: string;
-      password: string;
-      email: string;
-    },
+    postData: RegisterUser,
   ): Promise<SuccessCreatingUser> {
     return await this.userService.signUp(postData);
   }
@@ -31,10 +27,7 @@ export class UserController {
   @Delete('delete')
   async deleteUser(
     @Body()
-    deleteData: {
-      username: string;
-      password: string;
-    },
+    deleteData: DeleteUser,
   ): Promise<GeneralSuccess> {
     if (
       deleteData.password === undefined ||
