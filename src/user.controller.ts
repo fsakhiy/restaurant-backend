@@ -21,7 +21,7 @@ export class UserController {
     return this.userService.my();
   }
 
-  @Post('signup')
+  @Post('register')
   async createUser(
     @Body()
     postData: {

@@ -6,6 +6,8 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { PrismaService } from './prisma.service';
 import { PasswordService } from './password.service';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
 
 @Module({
   imports: [
@@ -13,7 +15,13 @@ import { PasswordService } from './password.service';
       envFilePath: '.env',
     }),
   ],
-  controllers: [AppController, UserController],
-  providers: [AppService, UserService, PrismaService, PasswordService],
+  controllers: [AppController, UserController, AuthController],
+  providers: [
+    AppService,
+    UserService,
+    PrismaService,
+    PasswordService,
+    AuthService,
+  ],
 })
 export class AppModule {}
