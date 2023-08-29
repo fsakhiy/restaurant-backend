@@ -1,7 +1,7 @@
 import { Controller, Post, Body, BadRequestException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { GeneralSuccess } from '../dto/response/success.dto';
-import { LoginRequest } from './dto/request.dto';
+import { LoginRequest } from './dto/auth.dto';
 import { GeneralError } from '../dto/response/error.dto';
 
 @Controller('auth')

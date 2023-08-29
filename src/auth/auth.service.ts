@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { GeneralSuccess } from 'src/dto/response/success.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { LoginRequest } from 'src/auth/dto/request.dto';
+import { LoginRequest } from 'src/auth/dto/auth.dto';
 import { GeneralError } from 'src/dto/response/error.dto';
 import { PasswordService } from 'src/password/password.service';
 
