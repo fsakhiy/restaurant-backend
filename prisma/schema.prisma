@@ -11,10 +11,36 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  uuid     String @unique @default(uuid())
-  name     String
-  username String @unique
-  email    String @unique
-  password String
+  id        Int      @id @default(autoincrement())
+  uuid      String   @unique @default(uuid())
+  name      String
+  username  String   @unique
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Food      Food[]
+}
+
+model Food {
+  id          Int      @id @default(autoincrement())
+  uuid        String   @unique @default(uuid())
+  name        String
+  price       Decimal
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdById Int
+  createdBy   User     @relation(fields: [createdById], references: [id])
+}
+
+model Customer {
+  id        Int      @id @default(autoincrement())
+  uuid      String   @unique @default(uuid())
+  name      String
+  email     String?  @unique
+  mobile    String?  @unique
+  address   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
