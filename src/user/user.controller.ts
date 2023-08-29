@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  Post,
-  Delete,
-  BadRequestException,
-  UsePipes,
-} from '@nestjs/common';
+import { Body, Controller, Post, Delete, UsePipes } from '@nestjs/common';
 import { UserService } from './user.service';
 import {
   GeneralSuccess,
@@ -33,12 +26,6 @@ export class UserController {
     @Body()
     deleteData: DeleteUser,
   ): Promise<GeneralSuccess> {
-    if (
-      deleteData.password === undefined ||
-      deleteData.username === undefined
-    ) {
-      throw new BadRequestException('username and password required');
-    }
     return await this.userService.deleteUser(deleteData);
   }
 }
