@@ -8,10 +8,12 @@ import {
   ParseIntPipe,
   Query,
   Param,
+  Put,
 } from '@nestjs/common';
 import { FoodService } from './food.service';
 import { CreateFoodRequest } from './dto/create-food.dto';
 import { CustomValidatorPipe } from 'src/validation/validation.pipe';
+import { UpdateFood } from './dto/update-food.dto';
 
 @Controller('food')
 export class FoodController {
@@ -34,5 +36,11 @@ export class FoodController {
   @Get(':uuid')
   getOne(@Param('uuid') uuid: string) {
     return this.foodService.getOne(uuid);
+  }
+
+  @Put()
+  @UsePipes(new CustomValidatorPipe())
+  update(@Body() updateFood: UpdateFood) {
+    return this.foodService.update(updateFood);
   }
 }

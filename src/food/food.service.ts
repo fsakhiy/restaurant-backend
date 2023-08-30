@@ -14,6 +14,7 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 import { GeneralError } from 'src/dto/response/error.dto';
+import { UpdateFood } from './dto/update-food.dto';
 
 @Injectable()
 export class FoodService {
@@ -147,6 +148,45 @@ export class FoodService {
         meta: meta.createdBy,
       },
     };
+    return res;
+  }
+
+  async update(data: UpdateFood): Promise<GeneralSuccess> {
+    try {
+      await this.prismaService.food.update({
+        where: {
+          uuid: data.uuid,
+        },
+        data: {
+          name: data.name,
+          description: data.description,
+          price: data.price,
+        },
+      });
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError) {
+        if (e.code === 'P2002') {
+          const res: GeneralError = {
+            message: 'cannot create data',
+            detail: 'data not found',
+          };
+
+          throw new BadRequestException(res);
+        }
+        const res: GeneralError = {
+          message: 'cannot create data',
+          detail: e.message,
+        };
+
+        throw new BadRequestException(res);
+      }
+    }
+
+    const res: GeneralSuccess = {
+      message: 'data updated',
+      detail: null,
+    };
+
     return res;
   }
 }
