@@ -7,6 +7,8 @@ import {
 import { CreateFoodRequest } from './dto/create-food.dto';
 import {
   GeneralSuccess,
+  SuccessWithDataAuthor,
+  // SuccessWithData,
   SuccessWithDataMeta,
 } from 'src/dto/response/success.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -98,6 +100,53 @@ export class FoodService {
       },
     };
 
+    return res;
+  }
+
+  async getOne(uuid: string): Promise<SuccessWithDataMeta> {
+    const data = await this.prismaService.food.findFirst({
+      where: {
+        uuid: uuid,
+      },
+      select: {
+        name: true,
+        price: true,
+        description: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    const meta = await this.prismaService.food.findFirst({
+      where: {
+        uuid: uuid,
+      },
+      select: {
+        createdBy: {
+          select: {
+            uuid: true,
+            username: true,
+            name: true,
+          },
+        },
+      },
+    });
+
+    if (!data) {
+      const res: GeneralError = {
+        message: 'cannot found data',
+        detail: null,
+      };
+      throw new NotFoundException(res);
+    }
+
+    const res: SuccessWithDataAuthor = {
+      message: 'data retrieved',
+      detail: {
+        data: data,
+        meta: meta.createdBy,
+      },
+    };
     return res;
   }
 }

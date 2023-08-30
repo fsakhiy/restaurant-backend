@@ -21,3 +21,18 @@ export interface SuccessWithDataMeta {
     };
   };
 }
+
+export interface SuccessWithData {
+  message: string;
+  detail: {
+    data: any;
+  };
+}
+
+export interface SuccessWithDataAuthor {
+  message: string;
+  detail: {
+    data: any;
+    meta: any;
+  };
+}

@@ -7,6 +7,7 @@ import {
   DefaultValuePipe,
   ParseIntPipe,
   Query,
+  Param,
 } from '@nestjs/common';
 import { FoodService } from './food.service';
 import { CreateFoodRequest } from './dto/create-food.dto';
@@ -28,5 +29,10 @@ export class FoodController {
     @Query('pageSize', new DefaultValuePipe(10), ParseIntPipe) pageSize: number,
   ) {
     return this.foodService.getAll(page, pageSize);
+  }
+
+  @Get(':uuid')
+  getOne(@Param('uuid') uuid: string) {
+    return this.foodService.getOne(uuid);
   }
 }
