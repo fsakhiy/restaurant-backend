@@ -2,9 +2,13 @@ import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateFoodRequest } from './dto/create-food.dto';
-import { GeneralSuccess } from 'src/dto/response/success.dto';
+import {
+  GeneralSuccess,
+  SuccessWithDataMeta,
+} from 'src/dto/response/success.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 import { GeneralError } from 'src/dto/response/error.dto';
@@ -46,6 +50,52 @@ export class FoodService {
     const res: GeneralSuccess = {
       message: 'food created',
       detail: null,
+    };
+
+    return res;
+  }
+
+  async getAll(page: number, pageSize: number): Promise<SuccessWithDataMeta> {
+    const skip = (page - 1) * pageSize;
+
+    const data = await this.prismaService.food.findMany({
+      select: {
+        uuid: true,
+        name: true,
+        price: true,
+        description: true,
+      },
+      skip,
+      take: pageSize,
+      orderBy: { updatedAt: 'desc' },
+    });
+    if (!data) {
+      const res: GeneralError = {
+        message: 'data not found',
+        detail: null,
+      };
+      throw new NotFoundException(res);
+    }
+
+    const foodWithNumbers = data.map((food) => ({
+      ...food,
+      price: parseFloat(food.price.toString()),
+    }));
+
+    const totalItem = await this.prismaService.food.count();
+    const nextPage = page * pageSize < totalItem ? page + 1 : null;
+
+    const res: SuccessWithDataMeta = {
+      message: 'data retrieved',
+      detail: {
+        data: foodWithNumbers,
+        meta: {
+          currentPage: page,
+          nextPage: nextPage,
+          itemsShowed: pageSize,
+          totalItems: totalItem,
+        },
+      },
     };
 
     return res;
