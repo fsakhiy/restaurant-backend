@@ -8,12 +8,14 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { LoginRequest } from 'src/auth/dto/auth.dto';
 import { GeneralError } from 'src/dto/response/error.dto';
 import { PasswordService } from 'src/password/password.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly passwordService: PasswordService,
+    private readonly jwtService: JwtService,
   ) {}
 
   async login(loginData: LoginRequest): Promise<GeneralSuccess> {
@@ -25,6 +27,7 @@ export class AuthService {
         username: true,
         password: true,
         name: true,
+        id: true,
       },
     });
 
@@ -49,9 +52,14 @@ export class AuthService {
       throw new UnauthorizedException(err);
     }
 
+    const payload = { id: userData.id, username: userData.username };
+    const token = this.jwtService.sign(payload);
+
     const res: GeneralSuccess = {
       message: 'successfully logged in',
-      detail: null,
+      detail: {
+        token: token,
+      },
     };
     return res;
   }
